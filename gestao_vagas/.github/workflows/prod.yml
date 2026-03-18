@@ -1,0 +1,35 @@
+name: Gestao vagas Application
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Build project
+        run: mvn clean install
+      - name: Login Docker
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build docker image
+        run: docker build -t username/gestao_vagas .
+      - name: Publish image
+        run: docker push username/gestao_vagas
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull imagem docker hub
+        run: docker pull username/gestao_vagas:latest
+      - name: remove container
+        run: docker rm -f gestao-vagas
+      - name: Run docker container gestao-vagas
+        run: docker run -d -p 8080:8080 -e DATABASE_URL=${{secrets.DATABASE_URL}} -e DATABASE_PASSWORD='${{secrets.DATABASE_PASSWORD}}' -e DATABASE_USERNAME=${{secrets.DATABASE_USERNAME}} --name gestao-vagas username/gestao_vagas
