@@ -2,7 +2,9 @@ package br.com.justi.gestao_vagas.modules.company.adapter.out.persistence;
 
 import br.com.justi.gestao_vagas.modules.company.domain.Job;
 import br.com.justi.gestao_vagas.modules.company.domain.port.out.JobRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JobRepositoryAdapter implements JobRepository {
     private final JobJpaRepository jobJpaRepository;
 
