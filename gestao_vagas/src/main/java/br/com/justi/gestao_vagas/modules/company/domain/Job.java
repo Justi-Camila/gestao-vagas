@@ -1,15 +1,17 @@
 package br.com.justi.gestao_vagas.modules.company.domain;
 
+import lombok.Builder;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Builder
 public class Job {
-     private final UUID id;
+     private UUID id;
      private String description;
      private String benefits;
      private String level;
-     private final UUID companyId;
-     private final LocalDateTime createdAt;
+     private UUID companyId;
+     private LocalDateTime createdAt;
 
     public Job(UUID id, String description, String benefits, String level, UUID companyId, LocalDateTime createdAt) {
         this.id = id;
