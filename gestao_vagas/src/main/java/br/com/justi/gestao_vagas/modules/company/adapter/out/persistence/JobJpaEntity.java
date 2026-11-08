@@ -9,11 +9,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity(name = "job")
+@Entity(name = "jobJpa")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "job")
 public class JobJpaEntity {
 
     @Id
