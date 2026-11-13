@@ -19,11 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/company/job")
-public class CreateJobController {
+public class JobController {
 
     @Autowired
     private CreateJobUseCase createJobUseCase;
@@ -47,12 +49,8 @@ public class CreateJobController {
         var companyId = request.getAttribute("company_id");
 
         try {
-            var job= Job.builder()
-                    .benefits(createJobDTO.getBenefits())
-                    .companyId(UUID.fromString(companyId.toString()))
-                    .description(createJobDTO.getDescription())
-                    .level(createJobDTO.getLevel())
-                    .build();
+            var job= new Job(null, createJobDTO.getDescription(), createJobDTO.getBenefits(),
+                    createJobDTO.getLevel(), UUID.fromString(companyId.toString()), LocalDateTime.now());
 
             var result = this.createJobUseCase.execute(job);
             return ResponseEntity.ok().body(result);
@@ -76,17 +74,9 @@ public class CreateJobController {
     public ResponseEntity<Object> listByCompany(HttpServletRequest request) {
         var companyId = request.getAttribute("company_id");
 
-        try {
-            var job= Job.builder()
-                    .companyId(UUID.fromString(companyId.toString()))
-                    .build().getCompanyId();
+        var result = listAllJobsByCompanyUseCase.listAllJobsByCompanyUseCase(UUID.fromString(companyId.toString()));
 
-            var result = listAllJobsByCompanyUseCase.listAllJobsByCompanyUseCase(job);
-
-            return ResponseEntity.ok().body(result);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().body(result);
     }
 
 }

@@ -1,10 +1,8 @@
 package br.com.justi.gestao_vagas.modules.company.domain;
 
-import lombok.Builder;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Builder
 public class Job {
      private UUID id;
      private String description;
@@ -20,10 +18,6 @@ public class Job {
         this.level = level;
         this.companyId = companyId;
         this.createdAt = createdAt;
-    }
-
-    public boolean belongsTo(UUID otherCompanyId) {
-        return this.companyId.equals(otherCompanyId);
     }
 
     public UUID getId() {
