@@ -1,6 +1,7 @@
 package br.com.justi.gestao_vagas.modules.company.adapter.out.persistence;
 
 
+import br.com.justi.gestao_vagas.modules.company.domain.Company;
 import br.com.justi.gestao_vagas.modules.company.domain.port.out.CompanyRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,15 @@ public class CompanyRepositoryAdapter implements CompanyRepository {
     public boolean existsById(UUID companyId) {
         return companyJpaRepository.existsById(companyId);
     }
+
+    @Override
+    public boolean existsByUsernameOrEmail(String username, String email) {
+        return false;
+    }
+
+    @Override
+    public Company save(Company company) {
+        return null;
+    }
+
 }
